@@ -109,32 +109,26 @@ const Contact = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!validateForm()) {
-            return;
-        }
+        if (!validateForm()) return;
 
         setFormStatus(prev => ({ ...prev, isSubmitting: true, error: null }));
 
         try {
-            // EmailJS configuration - Replace with your actual EmailJS credentials
-            const serviceId = 'your_service_id';
-            const templateId = 'your_template_id';
-            const userId = 'your_user_id';
+            // Send email via Node.js backend
+            const response = await fetch('https://clinic-server-253a.onrender.com/send-email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    ...formData,
+                    to_email: clinicInfo.email
+                })
+            });
 
-            // Prepare email template parameters
-            const templateParams = {
-                from_name: formData.name,
-                from_email: formData.email,
-                from_phone: formData.phone,
-                service: formData.service,
-                appointment_date: formData.date,
-                appointment_time: formData.time,
-                message: formData.message,
-                to_email: clinicInfo.email
-            };
+            const data = await response.json();
 
-            // Send email using EmailJS
-            await emailjs.send(serviceId, templateId, templateParams, userId);
+            if (!data.success) {
+                throw new Error(data.message);
+            }
 
             // Send WhatsApp message
             const whatsappMessage = encodeURIComponent(
@@ -147,15 +141,10 @@ const Contact = () => {
                 `Time: ${formData.time}\n` +
                 `Message: ${formData.message}`
             );
-
-            const whatsappNumber = '+1234567890'; // Replace with actual clinic WhatsApp number
+            const whatsappNumber = '+1234567890'; // clinic WhatsApp number
             window.open(`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`, '_blank');
 
-            setFormStatus({
-                isSubmitting: false,
-                isSubmitted: true,
-                error: null
-            });
+            setFormStatus({ isSubmitting: false, isSubmitted: true, error: null });
 
             // Reset form
             setFormData({
@@ -177,6 +166,7 @@ const Contact = () => {
             });
         }
     };
+
 
     const getMinDate = () => {
         const today = new Date();
