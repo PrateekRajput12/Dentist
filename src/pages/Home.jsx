@@ -42,7 +42,7 @@ const Home = () => {
     return (
         <div className="home">
             {/* Hero Section */}
-            <section
+            {/* <section
                 style={{
                     minHeight: '100vh',
                     display: 'flex',
@@ -170,6 +170,63 @@ const Home = () => {
                                         borderRadius: '50%',
                                         opacity: 0.3
                                     }}
+                                />
+                            </div>
+                        </motion.div>
+                    </div>
+                </div>
+            </section> */}
+            <section className="hero-section">
+                <div className="container">
+                    <div className="grid">
+                        {/* Left Content */}
+                        <motion.div
+                            initial={{ opacity: 0, x: -50 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.8 }}
+                        >
+                            <h1>
+                                Your Smile is <span>Our Priority</span>
+                            </h1>
+                            <p>
+                                Experience exceptional dental care in a comfortable and friendly environment.
+                                Our expert team is dedicated to helping you achieve and maintain a healthy,
+                                beautiful smile for life.
+                            </p>
+                            <div className="btn-wrapper">
+                                <motion.button
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    onClick={scrollToAppointment}
+                                    className="btn btn-primary"
+                                >
+                                    Book Appointment
+                                </motion.button>
+
+                                <motion.button
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    onClick={openWhatsApp}
+                                    className="btn btn-secondary"
+                                >
+                                    Chat on WhatsApp
+                                </motion.button>
+                            </div>
+                        </motion.div>
+
+                        {/* Right Circle / Tooth */}
+                        <motion.div
+                            initial={{ opacity: 0, x: 50 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.8, delay: 0.2 }}
+                            style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+                        >
+                            <div className="circle">
+                                <FaTooth size="50%" color="white" />
+                                <motion.div
+                                    className="circle-border"
+                                    animate={{ scale: [1, 1.1, 1], rotate: [0, 5, -5, 0] }}
+                                    transition={{ duration: 4, repeat: Infinity, repeatType: "reverse" }}
                                 />
                             </div>
                         </motion.div>
